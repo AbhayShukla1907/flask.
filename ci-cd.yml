@@ -1,0 +1,61 @@
+name: CI/CD Pipeline for Flask App
+
+# This triggers the workflow on push to the staging or main branch, or when a release is created
+on:
+  push:
+    branches:
+      - staging
+      - main
+  release:
+    types: [created]
+
+jobs:
+  # Step 1: Install Dependencies
+  install-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+  # Step 2: Run Tests
+  run-tests:
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Run tests
+        run: pytest
+
+  # Step 3: Build the Flask app
+  build:
+    needs: run-tests
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Build Flask app
+        run: echo "Building the Flask app"
+
+  # Step 4: Deploy to Staging Environment
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+    steps:
+      - name: Deploy to Staging
+        run: echo "Deploying to Staging Environment"
+
