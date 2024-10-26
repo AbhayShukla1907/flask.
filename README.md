@@ -34,10 +34,15 @@ This project demonstrates how to automate the deployment process of a Flask appl
 2. Install Flask:
 
        pip3 install flask
-3. Clone the Repository: 
+
+   ![Screenshot 2024-10-26 151204](https://github.com/user-attachments/assets/7bc1e4f3-db4b-46e7-96a0-5b9423a871aa)
+
+4. Clone the Repository: 
 
        git clone https://github.com/AbhayShukla1907/flask..git
        cd flask.
+   ![Screenshot 2024-10-26 151311](https://github.com/user-attachments/assets/e4198911-2a17-4468-bbba-d56fa69e1251)
+
 
 ## Fork the Flask Repository
 Go to GitHub and fork the following sample Flask app repository:
@@ -52,7 +57,9 @@ To install Jenkins on Ubuntu
 2. Install Java (Jenkins requires Java to run):
 
        sudo apt install openjdk-11-jdk
-3. Add Jenkins repository and install Jenkins:
+![Screenshot 2024-10-25 180712](https://github.com/user-attachments/assets/04f2a4c5-7e5c-42c1-b77e-88f62e327f80)
+
+4. Add Jenkins repository and install Jenkins:
 
        curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
            /usr/share/keyrings/jenkins-keyring.asc > /dev/null
@@ -62,7 +69,7 @@ To install Jenkins on Ubuntu
        sudo apt update
        sudo apt install jenkins
 
-4. Start Jenkins:
+5. Start Jenkins:
 
        sudo systemctl start jenkins
 Visit http://localhost:8080 and complete the setup by using the initial admin password:
@@ -139,6 +146,7 @@ This Jenkinsfile performs the following tasks:
 
 ## Configuring Pipeline Triggers
 To set up GitHub Webhooks and configure Pipeline Triggers:
+![Screenshot 2024-10-26 213007](https://github.com/user-attachments/assets/ad05e0ef-73bd-4aa1-882f-35da89b9faa6)
 
 1. Install the "GitHub Integration" plugin in Jenkins.
 2. Configure Webhook in GitHub:
@@ -147,9 +155,12 @@ To set up GitHub Webhooks and configure Pipeline Triggers:
 . Set the Payload URL to http://192.168.43.62:8080/github-webhook/.
 . Set Content Type to application/json.
 . Choose Just the push event for triggering the webhook.
-3. Configure Jenkins Job:
+![Screenshot 2024-10-26 213351](https://github.com/user-attachments/assets/895e03d0-f280-4be8-8935-cbaf370e4b8d)
+
+4. Configure Jenkins Job:
 . Create a Pipeline job in Jenkins.
 . Under Build Triggers, select GitHub hook trigger for GITScm polling.
+![Screenshot 2024-10-26 213523](https://github.com/user-attachments/assets/8fbbf4aa-66e0-4a58-bd34-45e93ac8a65d)
 
 ##  Testing the Pipeline
 Once Jenkins pipeline is configured:
@@ -161,13 +172,12 @@ Once Jenkins pipeline is configured:
        git push origin main
 
 3. Jenkins will automatically detect the changes via the webhook and trigger the build.
+   ![Screenshot 2024-10-25 223913](https://github.com/user-attachments/assets/3a97c6bf-d86d-433f-a4b2-8a9a4bef8455)
+
 
 
 # Conclusion
 By following these steps, we successfully set up a CI/CD pipeline for Flask application using Jenkins. Each time code is pushed to the GitHub repository, Jenkins will automatically run the pipeline, test the code, and deploy it.
-
-
-
 
 
 
