@@ -117,7 +117,7 @@ The Jenkinsfile defines the CI/CD pipeline stages for Flask application. Here's 
         }
         success {
             // Notify on successful build
-            mail to: 'your_email@example.com',
+            mail to: 'abhay06072002@gmail.com
                  subject: "SUCCESS: Jenkins Build #${env.BUILD_NUMBER}",
                  body: "The build has been successfully completed!"
         }
