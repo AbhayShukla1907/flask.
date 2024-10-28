@@ -175,7 +175,128 @@ Once Jenkins pipeline is configured:
    ![Screenshot 2024-10-25 223913](https://github.com/user-attachments/assets/3a97c6bf-d86d-433f-a4b2-8a9a4bef8455)
 
 
+# GitHub Actions CI/CD Pipeline for Flask App
+This project demonstrates how to implement a CI/CD pipeline using GitHub Actions for a Flask web application. The pipeline includes steps for testing, building, and deploying the app to staging and production environments.
 
+## Objectives
+. Set up a CI/CD pipeline for a Python Flask app using GitHub Actions.
+. Automate testing and deployment to both staging and production environments.
+
+## Prerequisites
+. A GitHub repository with the Python Flask application.
+. main and staging branches in the repository.
+. GitHub Actions enabled for the repository.
+. GitHub Secrets for storing sensitive information such as API tokens or deployment keys.
+## Setup
+### Create staging Branch:
+
+##  GitHub Actions Workflow Configuration
+### Create the Directory:
+
+    cd flask.
+    mkdir -p .github/workflows
+### Create a YAML File:
+Inside the .github/workflows folder, create a file called ci-cd.yml.
+
+    touch .github/workflows/ci-cd.yml
+
+### Define GitHub Actions Workflow
+Here’s the detailed YAML configuration for your CI/CD pipeline:
+      
+      name: CI/CD Pipeline for Flask App
+
+    # This triggers the workflow on push to the staging or main branch, or when a release is created
+    on:
+      push:
+        branches:
+          - staging
+          - main
+      release:
+        types: [created]
+
+    jobs:
+      # Step 1: Install Dependencies
+      install-dependencies:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v2
+      
+          - name: Set up Python
+            uses: actions/setup-python@v2
+            with:
+              python-version: '3.x'
+
+          - name: Install dependencies
+            run: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+
+      # Step 2: Run Tests
+      run-tests:
+        needs: install-dependencies
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v2
+      
+          - name: Run tests
+            run: pytest
+
+      # Step 3: Build the Flask app
+      build:
+        needs: run-tests
+        runs-on: ubuntu-latest
+        if: success()
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v2
+      
+          - name: Build Flask app
+            run: echo "Building the Flask app"
+
+      # Step 4: Deploy to Staging Environment
+      deploy-staging:
+        needs: build
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/staging'
+        steps:
+          - name: Deploy to Staging
+            run: echo "Deploying to Staging Environment"
+
+      # Step 5: Deploy to Production Environment
+      deploy-production:
+        needs: build
+        runs-on: ubuntu-latest
+        if: github.event_name == 'release'
+        steps:
+          - name: Deploy to Production
+            run: echo "Deploying to Production Environment"
+
+   ### GitHub Secrets
+Need to configure GitHub Secrets for any sensitive information that pipeline needs, such as:
+. API Tokens for accessing external services.
+. Deployment Keys for secure deployment.
+
+## Workflow Execution
+. Push to Staging Branch: Any changes pushed to the staging branch trigger the workflow for staging deployment.
+. Push to Main Branch: Changes on the main branch only build and test the application.
+. Release Tag: When a new release is tagged, it triggers a production deployment
+
+##  Monitoring Workflow
+Go to the Actions tab in GitHub repository to monitor and troubleshoot each step of the workflow.
+
+## Example Run
+. Push to Staging: The app is deployed to staging.
+. Release Tag: Production deployment triggers after tagging a release.
+
+
+
+
+
+
+
+   
 # Conclusion
 By following these steps, we successfully set up a CI/CD pipeline for Flask application using Jenkins. Each time code is pushed to the GitHub repository, Jenkins will automatically run the pipeline, test the code, and deploy it.
 
